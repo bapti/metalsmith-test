@@ -3,19 +3,20 @@ var Metalsmith = require('metalsmith');
 var markdown = require('metalsmith-markdown');
 var templates = require('metalsmith-templates');
 var handlebars = require('handlebars');
+var metadata = require("./metadata.json");
 
+gulp.task('default', [ 'build-html' ]);
 
+gulp.task('build-html', function(done){
 
-gulp.task('default', function(done){
-  console.log("test");
-  done();
-});
-
-gulp.task('build', function(done){
-
-  Metalsmith(__dirname)
+  Metalsmith("./")
+    .source("./src")
+    .metadata( metadata )
+    //.directory("./build")
     .use(markdown())
-    .use(templates('handlebars'))
+    .use(templates({
+      "engine": "handlebars"
+    }))
     .build(function(err) {
       done(err);
     });
