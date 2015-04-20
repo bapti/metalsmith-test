@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/bapti/metalsmith-test",
   "dependencies": {
+    "gulp": "^3.8.11",
     "metalsmith": "^1.6.0",
     "metalsmith-collections": "^0.7.0",
     "metalsmith-markdown": "^0.2.1",
