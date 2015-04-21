@@ -10,7 +10,7 @@ gulp.task('default', [ 'build-html' ]);
 gulp.task('build-html', function(done){
 
   Metalsmith("./")
-    .source("./src")
+    //.source("./src")
     .metadata( metadata )
     //.directory("./build")
     .use(markdown())
