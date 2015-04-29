@@ -1,10 +1,12 @@
+<!DOCTYPE html>
 <html>
-  {{> header}}
-  <h2>{{title}}</h2>
+  {{> head}}
 
-  <article>
-      {{{contents}}}
-  </article>
+  <body>
+    {{> nav }}
 
-  {{> footer}}
+    {{> post }}
+
+    {{> footer }}
+  </body>
 </html>

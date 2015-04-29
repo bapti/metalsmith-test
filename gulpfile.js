@@ -6,13 +6,20 @@ var collections = require('metalsmith-collections');
 var permalinks  = require('metalsmith-permalinks');
 var Handlebars = require('handlebars');
 var metadata = require("./metadata.json");
+var fs = require("fs");
 
 
-Handlebars.registerPartial('header', 
-  fs.readFileSync(__dirname + '/templates/partials/header.hbt').toString()
+Handlebars.registerPartial('head', 
+  fs.readFileSync(__dirname + '/templates/partials/head.hbt').toString()
+  );
+Handlebars.registerPartial('nav', 
+  fs.readFileSync(__dirname + '/templates/partials/nav.hbt').toString()
   );
 Handlebars.registerPartial('footer', 
   fs.readFileSync(__dirname + '/templates/partials/footer.hbt').toString()
+  );
+Handlebars.registerPartial('post', 
+  fs.readFileSync(__dirname + '/templates/partials/post.hbt').toString()
   );
 
 gulp.task('default', [ 'build-html' ]);
