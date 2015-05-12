@@ -1,7 +1,7 @@
 ---
-postTitle: My Second Post
-date: 2015-04-23
-template: page.hbt
+title: My Second Post
+date: 2015-05-10
+template: post.hbt
 ---
 
 My amazing second post

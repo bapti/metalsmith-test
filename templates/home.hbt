@@ -8,9 +8,9 @@
     {{#each collections.posts}}
       <article>
         <header>
-          <h3>{{this.title}}</h3>
+          <h3>{{title}}</h3>
         </header>
-        <p>{{this.contents}}</p>
+        <p>{{contents}}</p>
       </article>
     {{/each}}
 

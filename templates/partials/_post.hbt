@@ -3,4 +3,6 @@
     <h3>{{title}}</h3>
   </header>
   <p>{{contents}}</p>
+
+  {{{this}}}
 </article>
