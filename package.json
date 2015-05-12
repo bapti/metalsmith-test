@@ -2,7 +2,7 @@
   "name": "metalsmith-test",
   "version": "1.0.0",
   "description": "Testing out metalsmith",
-  "main": "index.js",
+  "main": "gulpfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,13 +18,11 @@
   "homepage": "https://github.com/bapti/metalsmith-test",
   "dependencies": {
     "gulp": "^3.8.11",
-    "handlebars": "^3.0.2",
     "lodash": "^3.8.0",
     "metalsmith": "^1.6.0",
     "metalsmith-collections": "^0.7.0",
+    "metalsmith-templates": "^2.0.0",
     "metalsmith-markdown": "^0.2.1",
-    "metalsmith-permalinks": "^0.4.0",
-    "metalsmith-templates": "^0.7.0",
-    "prettyjson": "^1.1.0"
+    "metalsmith-permalinks": "^0.4.0"
   }
 }
