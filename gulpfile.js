@@ -6,6 +6,7 @@ var collections = require('metalsmith-collections');
 var permalinks  = require('metalsmith-permalinks');
 var _ = require('lodash');
 var metadata = require("./metadata.json");
+var jade = require("jade");
 
 
 var metalsmithAssert = function(input){
@@ -33,10 +34,12 @@ gulp.task('build-html', function(done){
       date: 'YYYY'
     }))
     .use(templates({
-      "engine": "handlebars"
+      "engine": "jade"
     }))
     .build(function(err) {
-      if (err){ console.log(err); }
+      if (err){ 
+        console.log(err); 
+      }
       console.log("Build finished");
       done(err);
     });

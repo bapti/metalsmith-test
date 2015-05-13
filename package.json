@@ -18,6 +18,7 @@
   "homepage": "https://github.com/bapti/metalsmith-test",
   "dependencies": {
     "gulp": "^3.8.11",
+    "jade": "^1.9.2",
     "lodash": "^3.8.0",
     "metalsmith": "^1.6.0",
     "metalsmith-collections": "^0.7.0",

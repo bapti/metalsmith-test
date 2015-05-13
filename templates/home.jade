@@ -1,8 +1,5 @@
 extends ./layout.jade
 
-block body
+block content
   each post in collections.posts
-    article
-      header
-        h3 post.title
-      p post.contents
+    include ./partials/post.jade
