@@ -34,7 +34,9 @@ gulp.task('build-html', function(done){
       date: 'YYYY'
     }))
     .use(templates({
-      "engine": "jade"
+      engine:   "jade"
+      , pretty:   true
+      //, inPlace:  true
     }))
     .build(function(err) {
       if (err){ 
