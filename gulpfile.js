@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var sequence = require('gulp-sequence');
 var Metalsmith = require('metalsmith');
 var markdown = require('metalsmith-markdown');
 var templates = require('metalsmith-templates');
@@ -10,6 +11,7 @@ var metadata = require("./metadata.json");
 var jade = require("jade");
 var neat = require('node-neat');
 var bourbon = require('node-bourbon');
+var browserSync = require('browser-sync').create();
 
 var metalsmithAssert = function(input){
   return function(files, metalsmith, done){
@@ -17,7 +19,37 @@ var metalsmithAssert = function(input){
   }
 }
 
-gulp.task('default', [ 'build-html', 'build-sass' ]);
+gulp.task('default', 
+  sequence( 
+    'build',
+    'watch',
+    'server'
+  )
+);
+
+gulp.task('build', [
+  'build-html', 
+  'build-styles' 
+]);
+
+gulp.task('watch', function(){
+  gulp.watch('./src/content/**/*', ['build-html']);
+  gulp.watch('./templates/**/*', ['build-html']);
+  gulp.watch('./src/styles/**/*', ['build-styles']);
+});
+
+gulp.task('server', ['watch'], function() {
+  return browserSync.init([
+    'build/*.js', 
+    'build/application.css', 
+    'build/index.html'
+  ], 
+  {
+    server: {
+        baseDir: "./build"
+    }
+  });
+});
 
 gulp.task('build-html', function(done){
 
@@ -26,7 +58,7 @@ gulp.task('build-html', function(done){
     .metadata( metadata )
     .use(collections({
       posts: {
-        pattern: 'content/posts/*.md',
+        pattern: 'posts/*.md',
         sortBy: 'date',
         reverse: true
       }
@@ -51,7 +83,7 @@ gulp.task('build-html', function(done){
 
 });
 
-gulp.task('build-sass', function(done){
+gulp.task('build-styles', function(done){
   Metalsmith(__dirname)
     .source("src/styles")
     .use(sass({

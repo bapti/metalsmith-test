@@ -1,5 +1,7 @@
 extends ./layout.jade
 
 block content
+  p= collections.posts.length
   each post in collections.posts
     +post(post.title, post.contents)
+
