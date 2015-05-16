@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var sequence = require('gulp-sequence');
+var ghPages = require('gulp-gh-pages');
 var Metalsmith = require('metalsmith');
 var markdown = require('metalsmith-markdown');
 var templates = require('metalsmith-templates');
