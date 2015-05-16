@@ -19,6 +19,7 @@
   "dependencies": {
     "browser-sync": "^2.7.1",
     "gulp": "^3.8.11",
+    "gulp-gh-pages": "^0.5.1",
     "gulp-sequence": "^0.3.2",
     "jade": "^1.9.2",
     "lodash": "^3.8.0",

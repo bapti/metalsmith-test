@@ -105,3 +105,14 @@ gulp.task('build-styles', function(done){
       done(err);
     });
 });
+
+gulp.task('deploy', ['build'], function() {
+  return gulp.src('./build/**/*')
+    .pipe(ghPages({
+      remoteUrl: "git@github.com:bapti/metalsmith-test.git",
+      origin: "origin",
+      //branch: "gh-pages",
+      push: true,
+      force: true
+    }));
+});
