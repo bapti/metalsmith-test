@@ -12,6 +12,7 @@ var jade = require("jade");
 var neat = require('node-neat');
 var bourbon = require('node-bourbon');
 var browserSync = require('browser-sync').create();
+var path = require('path');
 
 var metalsmithAssert = function(input){
   return function(files, metalsmith, done){
@@ -95,7 +96,11 @@ gulp.task('build-styles', function(done){
       error: function(error) {
         console.log(error);
       },
-      includePaths: bourbon.includePaths.concat( neat.includePaths )
+      includePaths: [
+        './src/styles/bourbon',
+        './src/styles/neat', 
+        './src/styles/base'
+      ]
     }))
     .build(function(err) {
       if (err){ 
