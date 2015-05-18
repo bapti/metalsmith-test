@@ -1,5 +1,4 @@
 var gulp = require('gulp');
-var sequence = require('gulp-sequence');
 var ghPages = require('gulp-gh-pages');
 var Metalsmith = require('metalsmith');
 var markdown = require('metalsmith-markdown');
@@ -20,27 +19,19 @@ var metalsmithAssert = function(input){
   }
 }
 
-gulp.task('default', 
-  sequence( 
-    'build',
-    'watch',
-    'server'
-  )
-);
+gulp.task('default', ['server']);
 
 gulp.task('build', [
   'build-html', 
-  'build-styles' 
+  'build-styles',
+  'build-js'
 ]);
 
-gulp.task('watch', function(){
-  gulp.watch('./src/content/**/*', ['build-html']);
-  gulp.watch('./templates/**/*', ['build-html']);
-  gulp.watch('./src/styles/**/*', ['build-styles']);
-});
+gulp.task('watch-styles', ['build-styles'], browserSync.reload);
+gulp.task('watch-js', ['build-js'], browserSync.reload);
 
-gulp.task('server', ['watch'], function() {
-  return browserSync.init([
+gulp.task('server', ['build'], function() {
+  browserSync.init([
     'build/*.js', 
     'build/application.css', 
     'build/index.html'
@@ -50,10 +41,14 @@ gulp.task('server', ['watch'], function() {
         baseDir: "./build"
     }
   });
+  
+  gulp.watch('./src/scripts/**/*', ['watch-js']);
+  gulp.watch('./src/styles/**/*', ['watch-styles']);
 });
 
 gulp.task('build-html', function(done){
 
+  try{
   Metalsmith(__dirname)
     .source("src/content")
     .metadata( metadata )
@@ -81,6 +76,10 @@ gulp.task('build-html', function(done){
       console.log("Build finished");
       done(err);
     });
+  } catch (err) {
+    console.log(err);
+    done(err);
+  }
 
 });
 
@@ -105,6 +104,10 @@ gulp.task('build-styles', function(done){
       console.log("SASS finished");
       done(err);
     });
+});
+
+gulp.task('build-js', function(){
+
 });
 
 gulp.task('deploy', ['build'], function() {
