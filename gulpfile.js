@@ -9,8 +9,6 @@ var sass  = require('metalsmith-sass');
 var _ = require('lodash');
 var metadata = require("./metadata.json");
 var jade = require("jade");
-var neat = require('node-neat');
-var bourbon = require('node-bourbon');
 var browserSync = require('browser-sync').create();
 var path = require('path');
 
