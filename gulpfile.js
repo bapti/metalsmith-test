@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var gulpSequence = require('gulp-sequence');
 var ghPages = require('gulp-gh-pages');
 var Metalsmith = require('metalsmith');
 var markdown = require('metalsmith-markdown');
@@ -8,11 +9,9 @@ var permalinks  = require('metalsmith-permalinks');
 var sass  = require('metalsmith-sass');
 var _ = require('lodash');
 var metadata = require("./metadata.json");
-var jade = require("jade");
-var neat = require('node-neat');
-var bourbon = require('node-bourbon');
 var browserSync = require('browser-sync').create();
 var path = require('path');
+var del = require('del');
 
 var metalsmithAssert = function(input){
   return function(files, metalsmith, done){
@@ -28,23 +27,21 @@ gulp.task('build', [
   'build-js'
 ]);
 
-gulp.task('watch-styles', ['build-styles'], browserSync.reload);
-gulp.task('watch-js', ['build-js'], browserSync.reload);
+gulp.task('watch', function() {
+  gulp.watch('./src/styles/**/*.scss', ['build-styles']);
+  gulp.watch('./src/scripts/**/*.js', ['build-js']);
+  gulp.watch('./src/content/**/*.md', ['build-html']);
+  gulp.watch('./src/templates/**/*.jade', ['build-html']);
+});
 
-gulp.task('server', ['build'], function() {
-  browserSync.init([
-    'build/*.js', 
-    'build/application.css', 
-    'build/index.html'
-  ], 
-  {
-    server: {
-        baseDir: "./build"
-    }
+gulp.task('server', ['build', 'watch'], function() {
+  browserSync.init({
+    server: { baseDir: "./build" }
   });
   
-  gulp.watch('./src/scripts/**/*', ['watch-js']);
-  gulp.watch('./src/styles/**/*', ['watch-styles']);
+  gulp.watch('./build/**/*.html').on("change", browserSync.reload);
+  gulp.watch('./build/**/*.js').on("change", browserSync.reload);
+  gulp.watch('./build/application.css').on("change", browserSync.reload);
 });
 
 gulp.task('build-html', function(done){
@@ -52,6 +49,7 @@ gulp.task('build-html', function(done){
   try{
   Metalsmith(__dirname)
     .source("src/content")
+    .clean(false)
     .metadata( metadata )
     .use(collections({
       posts: {
@@ -87,6 +85,7 @@ gulp.task('build-html', function(done){
 gulp.task('build-styles', function(done){
   Metalsmith(__dirname)
     .source("src/styles")
+    .clean(false)
     .use(sass({
       outputStyle: "expanded",
       file: './src/styles/application.scss',
@@ -115,7 +114,19 @@ gulp.task('build-js', function(){
 
 });
 
-gulp.task('deploy', ['build'], function() {
+gulp.task('clean', function(done){
+  return del('./build', done);
+});
+
+gulp.task('publish', 
+  gulpSequence(
+    'clean',
+    'build',
+    'deploy-gh-pages'
+  )
+);
+
+gulp.task('deploy-gh-pages', function() {
   return gulp.src('./build/**/*')
     .pipe(ghPages({
       remoteUrl: "git@github.com:bapti/metalsmith-test.git",
