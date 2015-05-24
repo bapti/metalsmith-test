@@ -21,11 +21,12 @@ var metalsmithAssert = function(input){
 
 gulp.task('default', ['server']);
 
-gulp.task('build', [
-  'build-html', 
-  'build-styles',
-  'build-js'
-]);
+gulp.task('build',
+  gulpSequence(
+    'clean', 
+    ['build-html', 'build-styles', 'build-js']
+  )
+);
 
 gulp.task('watch', function() {
   gulp.watch('./src/styles/**/*.scss', ['build-styles']);
@@ -46,7 +47,6 @@ gulp.task('server', ['build', 'watch'], function() {
 
 gulp.task('build-html', function(done){
 
-  try{
   Metalsmith(__dirname)
     .source("src/content")
     .clean(false)
@@ -75,11 +75,6 @@ gulp.task('build-html', function(done){
       console.log("Build finished");
       done(err);
     });
-  } catch (err) {
-    console.log(err);
-    done(err);
-  }
-
 });
 
 gulp.task('build-styles', function(done){
@@ -118,15 +113,7 @@ gulp.task('clean', function(done){
   return del('./build', done);
 });
 
-gulp.task('publish', 
-  gulpSequence(
-    'clean',
-    'build',
-    'deploy-gh-pages'
-  )
-);
-
-gulp.task('deploy-gh-pages', function() {
+gulp.task('publish', ['build'], function() {
   return gulp.src('./build/**/*')
     .pipe(ghPages({
       remoteUrl: "git@github.com:bapti/metalsmith-test.git",
